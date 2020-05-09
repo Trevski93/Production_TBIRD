@@ -82,7 +82,7 @@ class ModelLoader():
         
         outputs=[]
         for n in range(6):
-            outputs.append(torch.argmax(self.models["static_decoder"](self.models["encoder"](sample[:,n])),1))
+            outputs.append(torch.argmax(self.models["static_decoder"](self.models["encoder"](samples[:,n])),1))
         output=process_labels.stitch(outputs)
         
         return output

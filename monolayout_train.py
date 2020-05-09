@@ -158,9 +158,9 @@ class Trainer:
         self.patch = (1, self.opt.occ_map_size // 2**4 + 1, self.opt.occ_map_size // 2**4 + 1)
 
         self.valid = Variable(torch.Tensor(np.ones((self.opt.batch_size, *self.patch))),
-                                                     requires_grad=False).float().gpu()
+                                                     requires_grad=False).float().cpu()
         self.fake = Variable(torch.Tensor(np.zeros((self.opt.batch_size, *self.patch))),
-                                                     requires_grad=False).float().gpu()
+                                                     requires_grad=False).float().cpu()
 
         print("initialization done")
 
@@ -347,10 +347,10 @@ class Trainer:
             for batch_idx, ipts in tqdm.tqdm(enumerate(self.val_loader)):
                 with torch.no_grad():
                     inputs, outputs = self.process_batch(ipts, True)
-                pred_static = torch.argmax(outputs["static"].detach(), 1).gpu().numpy()
-                pred_dynamic = torch.argmax(outputs["dynamic"].detach(), 1).gpu().numpy()
-                true_static = torch.squeeze(inputs["static"],1).detach().gpu().numpy()
-                true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().gpu().numpy()
+                pred_static = torch.argmax(outputs["static"].detach(), 1).cpu().numpy()
+                pred_dynamic = torch.argmax(outputs["dynamic"].detach(), 1).cpu().numpy()
+                true_static = torch.squeeze(inputs["static"],1).detach().cpu().numpy()
+                true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().cpu().numpy()
                 #print("pred shape",pred_static.shape, "true shape",true_static.shape)
                 threat_static+= compute_ts_road_map(pred_static,true_static)
                 threat_dynamic+= compute_ts_road_map(pred_dynamic,true_dynamic)
@@ -374,8 +374,8 @@ class Trainer:
             for batch_idx, ipts in tqdm.tqdm(enumerate(self.val_loader)):
                 with torch.no_grad():
                     inputs, outputs = self.process_batch(ipts, True)
-                pred = torch.argmax(outputs["topview"].detach(), 1).gpu().numpy()
-                true = torch.squeeze(inputs[self.opt.type],1).detach().gpu().numpy()
+                pred = torch.argmax(outputs["topview"].detach(), 1).cpu().numpy()
+                true = torch.squeeze(inputs[self.opt.type],1).detach().cpu().numpy()
                 #print(pred.shape, true.shape)
                 threat+=compute_ts_road_map(pred,true)
                 for bb in range(pred.shape[0]):
@@ -414,7 +414,7 @@ class Trainer:
         #true_top_view = true_top_view - Davida commented out
         #loss = CrossEntropyLoss2d() #TREVOR added , Davida commented out
         
-        loss = nn.CrossEntropyLoss(weight = torch.Tensor([1., weight]).gpu())# - TREVOR commented out, Davida uncommented
+        loss = nn.CrossEntropyLoss(weight = torch.Tensor([1., weight]).cpu())# - TREVOR commented out, Davida uncommented
         
         #GENERATED TOP VIEW: torch.Size([6, 2, 64, 64])
         #TRUE TOP VIEW: torch.Size([800, 800])

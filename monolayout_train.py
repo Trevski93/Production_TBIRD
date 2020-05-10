@@ -141,11 +141,7 @@ class Trainer:
             self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc)
             self.models["discriminator"] = model.Discriminator()
         
-        if self.opt.load_weights_folder is not None: #check this code
-            self.load_model()
-
         for key in self.models.keys():
-            self.models[key].to(self.device)
             if "discr" in key:
                 self.parameters_to_train_D += list(self.models[key].parameters())
             else:
@@ -160,6 +156,12 @@ class Trainer:
         self.model_lr_scheduler_D = optim.lr_scheduler.StepLR(self.model_optimizer_D, 
             self.opt.scheduler_step_size, 0.1)
 
+        if self.opt.load_weights_folder is not None: #check this code
+            self.load_model()
+
+        for key in self.models.keys():
+            self.models[key].to(self.device)
+        
         self.patch = (1, self.opt.occ_map_size // 2**4 + 1, self.opt.occ_map_size // 2**4 + 1)
 
         self.valid = Variable(torch.Tensor(np.ones((self.opt.batch_size, *self.patch))),

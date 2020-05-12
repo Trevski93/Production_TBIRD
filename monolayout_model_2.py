@@ -9,7 +9,7 @@ from monolayout_resnet_encoder import ResnetEncoder
 from collections import OrderedDict
 
 #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+cuda = torch.device('cuda')
 # Utils
 
 class ConvBlock(nn.Module):
@@ -128,7 +128,7 @@ class Decoder(nn.Module):
             convv2 = nn.ConvTranspose2d(x.shape[1], x.shape[1], 7, stride=2, padding=0)
             convv3 = nn.ConvTranspose2d(x.shape[1], x.shape[1], 7, stride=1, padding=0)
             convv4 = nn.ConvTranspose2d(x.shape[1], x.shape[1], 4, stride=1, padding=0)
-            x = convv1(x)
+            x = convv1(x).to(device=cuda)
             x = convv2(x)
             x = convv3(x)
             x = convv4(x)
@@ -141,7 +141,7 @@ class Decoder(nn.Module):
             convv2 = nn.ConvTranspose2d(x.shape[1], x.shape[1], 7, stride=2, padding=0)
             convv3 = nn.ConvTranspose2d(x.shape[1], x.shape[1], 7, stride=1, padding=0)
             convv4 = nn.ConvTranspose2d(x.shape[1], x.shape[1], 4, stride=1, padding=0)
-            x = convv1(x)
+            x = convv1(x).to(device=cuda)
             x = convv2(x)
             x = convv3(x)
             x = convv4(x)

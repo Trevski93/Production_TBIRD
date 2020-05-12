@@ -429,8 +429,8 @@ class Trainer:
                 true_static = torch.squeeze(inputs["static"],1).detach().cpu().numpy() #same  Trevor
                 true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().cpu().numpy() #same  Trevor
                 print("pred shape",pred_static.shape, "true shape",true_static.shape,pred_static.dtype, true_static.dtype)
-                threat_static+= compute_ts_road_map(pred_static,true_static)
-                threat_dynamic+= compute_ts_road_map(pred_dynamic,true_dynamic)
+                threat_static+= compute_ts_road_map(pred_static.astype("float64"),true_static.astype("float64"))
+                threat_dynamic+= compute_ts_road_map(pred_dynamic.astype("float64"),true_dynamic.astype("float64"))
                 for bb in range(pred_static.shape[0]):
                   #  iou_static += mean_IU(pred_static[bb], true_static[bb])
                   #  iou_dynamic += mean_IU(pred_dynamic[bb], true_dynamic[bb])

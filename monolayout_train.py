@@ -39,14 +39,14 @@ def data_loader(image_folder,annotation_csv,batch_size, discr):
     #labeled_scene_index = np.arange(107,108)
     #val_index=np.random.choice(labeled_scene_index, size=7, replace=False)
     
-    val_index  = np.arange(124,125)
-    #val_index  = np.arange(127,134)#labeled_scene_index #Comment out
+    #val_index  = np.arange(124,125)
+    val_index  = np.arange(127,134)#labeled_scene_index #Comment out
     
     #print("Val index scene indexxxxxxxx:", val_index) 
     #train_index=np.setdiff1d(labeled_scene_index,val_index)
     
-    train_index  = np.arange(123,124)#labeled_scene_index #comment out
-    #train_index  = np.arange(106,127)#labeled_scene_index #comment out
+    #train_index  = np.arange(123,124)#labeled_scene_index #comment out
+    train_index  = np.arange(106,127)#labeled_scene_index #comment out
     
     
     
@@ -422,9 +422,9 @@ class Trainer:
                 with torch.no_grad():
                     inputs, outputs = self.process_batch(ipts, True)
                 pred_static = torch.argmax(outputs["static"].detach(), 1).cpu().numpy() #converting to cpu top copy tensor to host memory - Trevor 
-                pred_dynamic = torch.argmax(outputs["dynamic"].detach(), 1).cpu().numpy() #same
-                true_static = torch.squeeze(inputs["static"],1).detach().cpu().numpy() #same 
-                true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().cpu().numpy() #same 
+                pred_dynamic = torch.argmax(outputs["dynamic"].detach(), 1).cpu().numpy() #same Trevor
+                true_static = torch.squeeze(inputs["static"],1).detach().cpu().numpy() #same  Trevor
+                true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().cpu().numpy() #same  Trevor
                 #print("pred shape",pred_static.shape, "true shape",true_static.shape)
                 threat_static+= compute_ts_road_map(pred_static,true_static)
                 threat_dynamic+= compute_ts_road_map(pred_dynamic,true_dynamic)

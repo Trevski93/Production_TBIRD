@@ -92,6 +92,7 @@ class Decoder(nn.Module):
             x = self.convs[("upconv", i, 0)](x)
             x = self.convs[("norm", i, 0)](x)
             x = self.convs[("relu", i, 0)](x)
+            print(type(x))
             #print('11',x.shape)                                  ###############
             #pdb.set_trace
             convv = nn.ConvTranspose2d(x.shape[1], x.shape[1], 2, stride=2)

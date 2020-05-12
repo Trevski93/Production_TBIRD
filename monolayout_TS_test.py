@@ -229,8 +229,8 @@ class Trainer:
         print("initialization done")
 
     def train(self):
-        if self.opt.load_weights_folder != '':
-            self.load_model()
+#         if self.opt.load_weights_folder != '':
+#             self.load_model()
             
         best_val=-1.0 #this is for if it's supposed to be high,need to check   
         for self.epoch in range(self.opt.num_epochs):
@@ -519,33 +519,33 @@ class Trainer:
         optim_path = os.path.join(save_path, "{}.pth".format("adam"))
         torch.save(self.model_optimizer.state_dict(), optim_path)
 
-    def load_model(self):
-         """Load model(s) from disk
-         """
-        self.opt.load_weights_folder = os.path.expanduser(self.opt.load_weights_folder)
+#     def load_model(self):
+#          """Load model(s) from disk
+#          """
+#         self.opt.load_weights_folder = os.path.expanduser(self.opt.load_weights_folder)
 
-        assert os.path.isdir(self.opt.load_weights_folder), \
-             "Cannot find folder {}".format(self.opt.load_weights_folder)
-        print("loading model from folder {}".format(self.opt.load_weights_folder))
+#         assert os.path.isdir(self.opt.load_weights_folder), \
+#              "Cannot find folder {}".format(self.opt.load_weights_folder)
+#         print("loading model from folder {}".format(self.opt.load_weights_folder))
 
-        for key in self.models.keys():
-            #print("Loading {} weights...".format(n))
-            path = os.path.join(self.opt.load_weights_folder, "{}.pth".format(key))
-            model_dict = self.models[key].state_dict()
-            pretrained_dict = torch.load(path)
-            pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-            model_dict.update(pretrained_dict)
-            self.models[key].load_state_dict(model_dict)
+#         for key in self.models.keys():
+#             #print("Loading {} weights...".format(n))
+#             path = os.path.join(self.opt.load_weights_folder, "{}.pth".format(key))
+#             model_dict = self.models[key].state_dict()
+#             pretrained_dict = torch.load(path)
+#             pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+#             model_dict.update(pretrained_dict)
+#             self.models[key].load_state_dict(model_dict)
 
-         # loading adam state
-        optimizer_load_path = os.path.join(self.opt.load_weights_folder, "adam.pth")
-        if os.path.isfile(optimizer_load_path):
-            print("Loading Adam weights")
-            optimizer_dict = torch.load(optimizer_load_path)
-            self.model_optimizer.load_state_dict(optimizer_dict)
-            #self.optimizer_G.load_state_dict(optimizer_dict)
-        else:
-            print("Cannot find Adam weights so Adam is randomly initialized")
+#          # loading adam state
+#         optimizer_load_path = os.path.join(self.opt.load_weights_folder, "adam.pth")
+#         if os.path.isfile(optimizer_load_path):
+#             print("Loading Adam weights")
+#             optimizer_dict = torch.load(optimizer_load_path)
+#             self.model_optimizer.load_state_dict(optimizer_dict)
+#             #self.optimizer_G.load_state_dict(optimizer_dict)
+#         else:
+#             print("Cannot find Adam weights so Adam is randomly initialized")
 
 
 if __name__ == "__main__":

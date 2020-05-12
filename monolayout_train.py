@@ -130,16 +130,16 @@ class Trainer:
         self.models["encoder"] = model.Encoder(18, self.height, self.width, pretrained=False).to(self.device) #test batch_size 
         if self.opt.type == "both":
             self.models["static_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
+                self.models["encoder"].resnet_encoder.num_ch_enc).cuda()
             
-            self.models["static_discr"] = model.Discriminator().to(self.device)
-            self.models["dynamic_discr"] = model.Discriminator().to(self.device)
+            self.models["static_discr"] = model.Discriminator().cuda()
+            self.models["dynamic_discr"] = model.Discriminator().cuda()
             
             self.models["dynamic_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
+                self.models["encoder"].resnet_encoder.num_ch_enc).cuda()
         else:
-            self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
-            self.models["discriminator"] = model.Discriminator().to(self.device)
+            self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc).cuda()
+            self.models["discriminator"] = model.Discriminator().cuda()
         
         for key in self.models.keys():
             if "discr" in key:
@@ -224,7 +224,7 @@ class Trainer:
         
         if self.opt.type == "both":
             outputs["dynamic"] = self.models["dynamic_decoder"](features).cuda()
-            outputs["static"] = self.models["static_decoder"](features).to(self.device)
+            outputs["static"] = self.models["static_decoder"](features).cuda()
             
             #print("PROCESS BATCHHHHHHHHHH, OUTPUTTSSS:", outputs["dynamic"].size(), outputs["static"].size()) 
             if validation:

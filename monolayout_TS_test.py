@@ -436,6 +436,7 @@ class Trainer:
                     iou_dynamic += mean_IU(pred_dynamic[bb].numpy(), true_dynamic[bb].numpy())
                     mAP_static += mean_precision(pred_static[bb].numpy(), true_static[bb].numpy())
                     mAP_dynamic += mean_precision(pred_dynamic[bb].numpy(), true_dynamic[bb].numpy())
+            print(len(self.val_loader))
             iou_static /= len(self.val_loader)
             mAP_static /= len(self.val_loader)
             threat_static /= len(self.val_loader)

@@ -135,19 +135,19 @@ class Trainer:
         self.width = 306
 
         # Initializing models
-        self.models["encoder"] = model.Encoder(18, self.height, self.width, pretrained=False).to(self.device) #test batch_size 
+        self.models["encoder"] = model.Encoder(18, self.height, self.width, pretrained=False) #.to(self.device) #test batch_size 
         if self.opt.type == "both":
             self.models["static_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
+                self.models["encoder"].resnet_encoder.num_ch_enc) #.to(self.device)
             
-            self.models["static_discr"] = model.Discriminator().to(self.device)
-            self.models["dynamic_discr"] = model.Discriminator().to(self.device)
+            self.models["static_discr"] = model.Discriminator() #.to(self.device)
+            self.models["dynamic_discr"] = model.Discriminator() #.to(self.device)
             
             self.models["dynamic_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
+                self.models["encoder"].resnet_encoder.num_ch_enc) #.to(self.device)
         else:
-            self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
-            self.models["discriminator"] = model.Discriminator().to(self.device)
+            self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc) #.to(self.device)
+            self.models["discriminator"] = model.Discriminator() #.to(self.device)
             
         print("************************TESTING**********************************")
         try:
@@ -191,9 +191,9 @@ class Trainer:
         for key in self.models.keys():
             self.models[key].to(self.device) ## NEW POTENTIALLY CRITICAL LINE OF CODE HERE FOR CUDA - TREVOR
             if "discr" in key:
-                self.parameters_to_train_D += list(self.models[key].parameters())
+                self.parameters_to_train_D += list(self.models[key].parameters().cuda())
             else:
-                self.parameters_to_train += list(self.models[key].parameters())
+                self.parameters_to_train += list(self.models[key].parameters().cuda())
                 
 #         for key in self.models.keys():
 #             self.models[key].to(self.device)

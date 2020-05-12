@@ -28,12 +28,14 @@ def get_args():
     parser.add_argument("--end_scene", type=int, default=134,
                          help="scene to end script")
     parser.add_argument("--start_sample", type=int, default=0,
-                         help="sample script")
+                         help="sample script start")
+    parser.add_argument("--end_sample", type=int, default=126,
+                         help="sample script end")
 
     return parser.parse_args()
 
 
-def process_and_save_images(image_folder,annotation_csv,start_scene,end_scene,start_sample):
+def process_and_save_images(image_folder,annotation_csv,start_scene,end_scene,start_sample,end_sample):
     NUM_SAMPLE_PER_SCENE = 126
     NUM_IMAGE_PER_SAMPLE = 6
     image_names = [
@@ -50,7 +52,7 @@ def process_and_save_images(image_folder,annotation_csv,start_scene,end_scene,st
 
     for scene_id in labeled_scene_index:
         print("starting scene",scene_id)
-        for sample_id in range(start_sample,NUM_SAMPLE_PER_SCENE):
+        for sample_id in range(start_sample,end_sample):
             sample_path = os.path.join(image_folder, f'scene_{scene_id}', f'sample_{sample_id}')
             data_entries = annotation_dataframe[(annotation_dataframe['scene'] == scene_id) & (annotation_dataframe['sample'] == sample_id)]
             corners = data_entries[['fl_x', 'fr_x', 'bl_x', 'br_x', 'fl_y', 'fr_y','bl_y', 'br_y']].to_numpy()
@@ -70,7 +72,7 @@ def process_and_save_images(image_folder,annotation_csv,start_scene,end_scene,st
             
 def main():
     args = get_args()
-    process_and_save_images(image_folder=args.image_folder,annotation_csv=args.annotation_csv,start_scene=args.start_scene,end_scene=args.end_scene,start_sample=args.start_sample)
+    process_and_save_images(image_folder=args.image_folder,annotation_csv=args.annotation_csv,start_scene=args.start_scene,end_scene=args.end_scene,start_sample=args.start_sample,end_sample=args.end_sample)
 
 if __name__ == "__main__":
     main()

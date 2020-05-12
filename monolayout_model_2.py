@@ -8,7 +8,7 @@ from monolayout_resnet_encoder import ResnetEncoder
 # from .convlstm import ConvLSTM
 from collections import OrderedDict
 
-
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Utils
 
@@ -96,7 +96,7 @@ class Decoder(nn.Module):
             #pdb.set_trace
             convv = nn.ConvTranspose2d(x.shape[1], x.shape[1], 2, stride=2)
             print(type(convv))
-            x = convv(x)
+            x = convv(x).to(device) 
             #x = upsample(x)
             #print('12', x.shape)                                  #################
             #x = torch.cat((x, features[i-6]), 1)

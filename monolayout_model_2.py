@@ -92,25 +92,25 @@ class Decoder(nn.Module):
             x = self.convs[("upconv", i, 0)](x)
             x = self.convs[("norm", i, 0)](x)
             x = self.convs[("relu", i, 0)](x)
-            print(type(x))
+#             print(type(x))
             #print('11',x.shape)                                  ###############
             #pdb.set_trace
             convv = nn.ConvTranspose2d(x.shape[1], x.shape[1], 2, stride=2).to(device=cuda)
-            print(type(convv))
+#             print(type(convv))
             
-            try: 
-                x.get_device()
-                print("x is cuda")
+#             try: 
+#                 x.get_device()
+#                 print("x is cuda")
                 
-            except AttributeError: 
-                print("x is NOT cuda")
+#             except AttributeError: 
+#                 print("x is NOT cuda")
                 
-            try: 
-                convv.get_device()
-                print("convv is cuda")
+#             try: 
+#                 convv.get_device()
+#                 print("convv is cuda")
             
-            except AttributeError:
-                print("convv is NOT cuda")
+#             except AttributeError:
+#                 print("convv is NOT cuda")
             
             x = convv(x) 
             #x = upsample(x)

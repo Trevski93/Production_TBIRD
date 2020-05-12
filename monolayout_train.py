@@ -108,7 +108,7 @@ def get_args():
                          help="tradeoff weight for discriminator loss")
     parser.add_argument("--discr_train_epoch", type=int, default=5,
                          help="epoch to start training discriminator")
-    parser.add_argument("--load_weights_folder", type=str, default= '', help="path to load model")
+    #parser.add_argument("--load_weights_folder", type=str, default= '', help="path to load model")
     
     return parser.parse_args()
 
@@ -228,7 +228,7 @@ class Trainer:
         print("initialization done")
 
     def train(self):
-        if self.opt.load_weights_folder != '':
+        if self.opt.load_weights_folder != None:
             self.load_model()
             
         best_val=-1.0 #this is for if it's supposed to be high,need to check   

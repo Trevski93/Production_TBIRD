@@ -221,7 +221,7 @@ class Trainer:
         #print("LETS DOUBLE CHECKKKKKKKKK:", inputs["color"].size())
 
         features = self.models["encoder"](inputs["color"]).cuda()
-        print("features variable in training script:"type(features))
+        print("features variable in training script:",type(features))
         
         if self.opt.type == "both":
             print("dynamic decoder type:", type(self.models["dynamic_decoder"]))

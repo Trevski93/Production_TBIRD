@@ -525,6 +525,7 @@ class Trainer:
 
         assert os.path.isdir(self.opt.load_weights_folder), \
              "Cannot find folder {}".format(self.opt.load_weights_folder)
+        
         print("loading model from folder {}".format(self.opt.load_weights_folder))
 
         for key in self.models.keys():

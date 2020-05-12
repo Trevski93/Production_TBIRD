@@ -138,16 +138,55 @@ class Trainer:
         self.models["encoder"] = model.Encoder(18, self.height, self.width, pretrained=False).to(self.device) #test batch_size 
         if self.opt.type == "both":
             self.models["static_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc.cuda()).to(self.device)
+                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
             
             self.models["static_discr"] = model.Discriminator().to(self.device)
             self.models["dynamic_discr"] = model.Discriminator().to(self.device)
             
             self.models["dynamic_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc.cuda()).to(self.device)
+                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
         else:
             self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
             self.models["discriminator"] = model.Discriminator().to(self.device)
+            
+        print("************************TESTING**********************************")
+        try:
+            self.models['encoder'].get_device()
+            print("encoder cuda yes")
+              
+        except AttributeError: 
+            print("encoder model is not cuda")
+              
+        try:
+            self.models['static_decoder'].get_device()
+            print("static_decoder cuda yes")
+              
+        except AttributeError: 
+            print("static_decoder model is not cuda")
+              
+        try:
+            self.models['static_discr'].get_device()
+            print("static_discr cuda yes")
+              
+        except AttributeError: 
+            print("static_discr model is not cuda")
+              
+        try:
+            self.models['dynamic_discr'].get_device()
+            print("dynamic_discr cuda yes")
+              
+        except AttributeError: 
+            print("dynamic_discr model is not cuda")  
+              
+        try:
+            self.models['dynamic_decoder'].get_device()
+            print("dynamic_decoder cuda yes")
+              
+        except AttributeError: 
+            print("dynamic_decoder model is not cuda") 
+              
+              
+        print("************************TESTING**********************************")
         
         for key in self.models.keys():
             if "discr" in key:

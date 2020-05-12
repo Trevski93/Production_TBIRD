@@ -421,7 +421,8 @@ class Trainer:
     def validation(self):
         if self.opt.type == "both":
             iou_static, iou_dynamic, mAP_static,mAP_dynamic = np.array([0., 0.]), np.array([0., 0.]),np.array([0., 0.]), np.array([0., 0.])
-            threat_static,threat_dynamic = 0,0
+            total_images = 0
+            #threat_static,threat_dynamic = 0,0
             for batch_idx, ipts in tqdm.tqdm(enumerate(self.val_loader)):
                 with torch.no_grad():
                     inputs, outputs = self.process_batch(ipts, True)
@@ -430,21 +431,22 @@ class Trainer:
                 true_static = torch.squeeze(inputs["static"],1).detach().cpu().numpy() #same  Trevor
                 true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().cpu().numpy() #same  Trevor
                 #print("pred shape",pred_static.shape, "true shape",true_static.shape,pred_static.dtype, true_static.dtype)
-                threat_static+= compute_ts_road_map(pred_static,true_static)
-                threat_dynamic+= compute_ts_road_map(pred_dynamic,true_dynamic)
+                #threat_static+= compute_ts_road_map(pred_static,true_static)
+                #threat_dynamic+= compute_ts_road_map(pred_dynamic,true_dynamic)
                 for bb in range(pred_static.shape[0]):
-                  #  iou_static += mean_IU(pred_static[bb], true_static[bb])
-                  #  iou_dynamic += mean_IU(pred_dynamic[bb], true_dynamic[bb])
+                    total_images += 1
+                    iou_static += mean_IU(pred_static[bb], true_static[bb])
+                    iou_dynamic += mean_IU(pred_dynamic[bb], true_dynamic[bb])
                     mAP_static += mean_precision(pred_static[bb], true_static[bb])
                     mAP_dynamic += mean_precision(pred_dynamic[bb], true_dynamic[bb])
-            iou_static /= len(self.val_loader)
-            mAP_static /= len(self.val_loader)
-            threat_static /= len(self.val_loader)
-            iou_dynamic /= len(self.val_loader)
-            mAP_dynamic /= len(self.val_loader)
-            threat_dynamic /= len(self.val_loader)
-          #  print("Epoch: %d | Validation: Static: mIOU: %.8f mAP: %.4f Dynamic: mIOU: %.8f mAP: %.4f"%(self.epoch, iou_static[1], mAP_static[1], iou_dynamic[1], mAP_dynamic[1]))
-            print("Epoch: %d | Validation: Static: mTS: %.8f mAP: %.4f Dynamic: mTS: %.8f mAP: %.4f"%(self.epoch, threat_static, mAP_static[1], threat_dynamic,mAP_dynamic[1]))
+            iou_static /= total_images #len(self.val_loader)
+            mAP_static /= total_images #len(self.val_loader)
+            #threat_static /= total_images #len(self.val_loader)
+            iou_dynamic /= total_images #len(self.val_loader)
+            mAP_dynamic /= total_images #len(self.val_loader)
+            #threat_dynamic /= len(self.val_loader)
+            print("Epoch: %d | Validation: Static: mIOU: %.8f mAP: %.4f Dynamic: mIOU: %.8f mAP: %.4f"%(self.epoch, iou_static[1], mAP_static[1], iou_dynamic[1], mAP_dynamic[1]))
+          #  print("Epoch: %d | Validation: Static: mTS: %.8f mAP: %.4f Dynamic: mTS: %.8f mAP: %.4f"%(self.epoch, threat_static, mAP_static[1], threat_dynamic,mAP_dynamic[1]))
             return threat_static + threat_dynamic #may want to see about having two returns to save independently
         else:
             iou, mAP = np.array([0., 0.]), np.array([0., 0.])

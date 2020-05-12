@@ -108,8 +108,7 @@ def get_args():
                          help="tradeoff weight for discriminator loss")
     parser.add_argument("--discr_train_epoch", type=int, default=5,
                          help="epoch to start training discriminator")
-    parser.add_argument("--load_weights_folder", type=str, default= '',
-                         help="path to load model")
+    parser.add_argument("--load_weights_folder", type=str, default= '', help="path to load model")
     
     return parser.parse_args()
 
@@ -430,7 +429,7 @@ class Trainer:
                 pred_dynamic = torch.argmax(outputs["dynamic"].detach(), 1).cpu().numpy() #same Trevor
                 true_static = torch.squeeze(inputs["static"],1).detach().cpu().numpy() #same  Trevor
                 true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().cpu().numpy() #same  Trevor
-                #print("pred shape",pred_static.shape, "true shape",true_static.shape)
+                #print("pred shape",pred_static.shape, "true shape",true_static.shape,pred_static.dtype, true_static.dtype)
                 threat_static+= compute_ts_road_map(pred_static,true_static)
                 threat_dynamic+= compute_ts_road_map(pred_dynamic,true_dynamic)
                 for bb in range(pred_static.shape[0]):

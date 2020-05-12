@@ -108,8 +108,6 @@ def get_args():
                          help="tradeoff weight for discriminator loss")
     parser.add_argument("--discr_train_epoch", type=int, default=5,
                          help="epoch to start training discriminator")
-    parser.add_argument("--load_weights_folder", type=str, default= '',
-                         help="path to load model")
     
     return parser.parse_args()
 
@@ -213,8 +211,8 @@ class Trainer:
         self.model_lr_scheduler_D = optim.lr_scheduler.StepLR(self.model_optimizer_D, 
             self.opt.scheduler_step_size, 0.1)
 
-        if self.opt.load_weights_folder is not None: #check this code
-            self.load_model()
+#         if self.opt.load_weights_folder is not None: #check this code
+#             self.load_model()
 
         for key in self.models.keys():
             self.models[key].to(self.device)

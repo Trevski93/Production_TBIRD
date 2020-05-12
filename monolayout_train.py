@@ -230,10 +230,10 @@ class Trainer:
 
         features = self.models["encoder"](inputs["color"]).cuda()
   
-        print("features variable in training script:",features.device())
+        print("features variable in training script:",features.device(1))
         
         if self.opt.type == "both":
-            print("dynamic decoder type:", self.models["dynamic_decoder"].device())
+            self.models["dynamic_decoder"].get_device()
             self.models["dynamic_decoder"] = self.models["dynamic_decoder"].cuda()
             outputs["dynamic"] = self.models["dynamic_decoder"](features).cuda()
             outputs["static"] = self.models["static_decoder"](features).cuda()

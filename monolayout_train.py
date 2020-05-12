@@ -115,7 +115,7 @@ def get_args():
 class Trainer:
     def __init__(self):
         self.opt = get_args()
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = "cuda"
         self.models = {}
         self.weight = {}
         self.weight["static"] = self.opt.static_weight
@@ -421,10 +421,10 @@ class Trainer:
             for batch_idx, ipts in tqdm.tqdm(enumerate(self.val_loader)):
                 with torch.no_grad():
                     inputs, outputs = self.process_batch(ipts, True)
-                pred_static = torch.argmax(outputs["static"].detach(), 1).cuda().numpy()
-                pred_dynamic = torch.argmax(outputs["dynamic"].detach(), 1).cuda().numpy()
-                true_static = torch.squeeze(inputs["static"],1).detach().cuda().numpy()
-                true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().cuda().numpy()
+                pred_static = torch.argmax(outputs["static"].detach(), 1).cpu().numpy() #converting to cpu top copy tensor to host memory - Trevor 
+                pred_dynamic = torch.argmax(outputs["dynamic"].detach(), 1).cpu().numpy() #same
+                true_static = torch.squeeze(inputs["static"],1).detach().cpu().numpy() #same 
+                true_dynamic = torch.squeeze(inputs["dynamic"],1).detach().cpu().numpy() #same 
                 #print("pred shape",pred_static.shape, "true shape",true_static.shape)
                 threat_static+= compute_ts_road_map(pred_static,true_static)
                 threat_dynamic+= compute_ts_road_map(pred_dynamic,true_dynamic)

@@ -191,9 +191,9 @@ class Trainer:
         for key in self.models.keys():
             self.models[key].to(self.device) ## NEW POTENTIALLY CRITICAL LINE OF CODE HERE FOR CUDA - TREVOR
             if "discr" in key:
-                self.parameters_to_train_D += list(self.models[key].parameters().cuda())
+                self.parameters_to_train_D += list(self.models[key].cuda().parameters())
             else:
-                self.parameters_to_train += list(self.models[key].parameters().cuda())
+                self.parameters_to_train += list(self.models[key].cuda().parameters())
                 
 #         for key in self.models.keys():
 #             self.models[key].to(self.device)

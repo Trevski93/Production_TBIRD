@@ -225,6 +225,7 @@ class Trainer:
         
         if self.opt.type == "both":
             print("dynamic decoder type:", type(self.models["dynamic_decoder"]))
+            self.models["dynamic_decoder"].cuda()
             outputs["dynamic"] = self.models["dynamic_decoder"](features).cuda()
             outputs["static"] = self.models["static_decoder"](features).cuda()
             

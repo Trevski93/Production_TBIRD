@@ -282,7 +282,7 @@ class Trainer:
             #print(inputs[2][0].size())
             #print(inputs[3][0].size())
             #print(inputs[4][0].size())
-            outputs, losses = self.process_batch(ipts)
+            outputs.cuda(), losses.cuda() = self.process_batch(ipts)
             #print("processing done")
             self.model_optimizer.zero_grad()
             

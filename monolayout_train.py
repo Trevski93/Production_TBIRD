@@ -519,13 +519,12 @@ class Trainer:
         torch.save(self.model_optimizer.state_dict(), optim_path)
 
     def load_model(self):
-         """Load model(s) from disk
-         """
+        """Load model(s) from disk
+        """
         #self.opt.load_weights_folder = os.path.expanduser(self.opt.load_weights_folder)
 
 #         assert os.path.isdir(self.opt.load_weights_folder), \
 #              "Cannot find folder {}".format(self.opt.load_weights_folder)
-        
         print("loading model from folder {}".format(self.opt.load_weights_folder))
 
         for key in self.models.keys():

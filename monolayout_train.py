@@ -220,7 +220,7 @@ class Trainer:
             
         #print("LETS DOUBLE CHECKKKKKKKKK:", inputs["color"].size())
 
-        features = self.models["encoder"](inputs["color"])
+        features = self.models["encoder"](inputs["color"]).to(self.device)
         
         if self.opt.type == "both":
             outputs["dynamic"] = self.models["dynamic_decoder"](features).to(self.device)

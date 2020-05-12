@@ -447,7 +447,7 @@ class Trainer:
         optim_path = os.path.join(save_path, "{}.pth".format("adam"))
         torch.save(self.model_optimizer.state_dict(), optim_path)
 
-     def load_model(self):
+    def load_model(self):
          """Load model(s) from disk
          """
          self.opt.load_weights_folder = os.path.expanduser(self.opt.load_weights_folder)

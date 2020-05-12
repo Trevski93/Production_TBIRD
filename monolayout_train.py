@@ -189,10 +189,18 @@ class Trainer:
         print("************************TESTING**********************************")
         
         for key in self.models.keys():
+            self.models[key].to(self.device) ## NEW POTENTIALLY CRITICAL LINE OF CODE HERE FOR CUDA - TREVOR
             if "discr" in key:
                 self.parameters_to_train_D += list(self.models[key].parameters())
             else:
                 self.parameters_to_train += list(self.models[key].parameters())
+                
+#         for key in self.models.keys():
+#             self.models[key].to(self.device)
+#             if "discr" in key:
+#                 self.parameters_to_train_D += list(self.models[key].parameters())
+#             else:
+#                 self.parameters_to_train += list(self.models[key].parameters())
 
         # Optimization 
         self.model_optimizer = optim.Adam(self.parameters_to_train, self.opt.lr)
@@ -257,6 +265,14 @@ class Trainer:
         #print("target",inputs["dynamic"].size(),inputs["dynamic"].dtype)
         #print("road osm",outputs["static_discr"].size(),inputs["static_discr"].dtype)
         #print("target osm",outputs["dynamic_discr"].size(),inputs["dynamic_discr"].dtype)
+        
+#         for key in self.models.keys():
+#             self.models[key].to(self.device)
+#             if "discr" in key:
+#                 self.parameters_to_train_D += list(self.models[key].parameters())
+#             else:
+#                 self.parameters_to_train += list(self.models[key].parameters())
+        
         
         #for key, inpt in inputs.items():
             #print("TYPE",inpt[0])

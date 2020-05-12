@@ -421,6 +421,7 @@ class Trainer:
         if self.opt.type == "both":
             iou_static, iou_dynamic, mAP_static,mAP_dynamic = np.array([0., 0.]), np.array([0., 0.]),np.array([0., 0.]), np.array([0., 0.])
             threat_static,threat_dynamic = 0,0
+            total_images = 0
             for batch_idx, ipts in tqdm.tqdm(enumerate(self.val_loader)):
                 with torch.no_grad():
                     inputs, outputs = self.process_batch(ipts, True)
@@ -432,17 +433,18 @@ class Trainer:
                 threat_static+= compute_ts_road_map(pred_static.float(),true_static.float())
                 threat_dynamic+= compute_ts_road_map(pred_dynamic.float(),true_dynamic.float())
                 for bb in range(pred_static.shape[0]):
+                    total_images += 1
                     iou_static += mean_IU(pred_static[bb].numpy(), true_static[bb].numpy())
                     iou_dynamic += mean_IU(pred_dynamic[bb].numpy(), true_dynamic[bb].numpy())
                     mAP_static += mean_precision(pred_static[bb].numpy(), true_static[bb].numpy())
                     mAP_dynamic += mean_precision(pred_dynamic[bb].numpy(), true_dynamic[bb].numpy())
             print(len(self.val_loader))
-            iou_static /= len(self.val_loader)
-            mAP_static /= len(self.val_loader)
-            threat_static /= len(self.val_loader)
-            iou_dynamic /= len(self.val_loader)
-            mAP_dynamic /= len(self.val_loader)
-            threat_dynamic /= len(self.val_loader)
+            iou_static /= total_images #len(self.val_loader)
+            mAP_static /= total_images #len(self.val_loader)
+            threat_static /= total_images #len(self.val_loader)
+            iou_dynamic /= total_images #len(self.val_loader)
+            mAP_dynamic /= total_images #len(self.val_loader)
+            threat_dynamic /= total_images #len(self.val_loader)
           #  print("Epoch: %d | Validation: Static: mIOU: %.8f mAP: %.4f Dynamic: mIOU: %.8f mAP: %.4f"%(self.epoch, iou_static[1], mAP_static[1], iou_dynamic[1], mAP_dynamic[1]))
             print("Epoch: %d | Validation: Static: mTS: %.8f mAP: %.4f Dynamic: mTS: %.8f mAP: %.4f iou_static %.8f iou_dynamic %.8f"%(self.epoch, threat_static, mAP_static[1], threat_dynamic,mAP_dynamic[1], iou_static[1], iou_dynamic[1] ))
             return threat_static + threat_dynamic #may want to see about having two returns to save independently

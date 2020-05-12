@@ -127,7 +127,7 @@ class Trainer:
         self.width = 306
 
         # Initializing models
-        self.models["encoder"] = model.Encoder(18, self.height, self.width, pretrained=False) #test batch_size 
+        self.models["encoder"] = model.Encoder(18, self.height, self.width, pretrained=False).to(self.device) #test batch_size 
         if self.opt.type == "both":
             self.models["static_decoder"] = model.Decoder(
                 self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)

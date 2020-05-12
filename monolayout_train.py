@@ -38,10 +38,18 @@ def data_loader(image_folder,annotation_csv,batch_size, discr):
     #labeled_scene_index = np.arange(106, 134)
     #labeled_scene_index = np.arange(107,108)
     #val_index=np.random.choice(labeled_scene_index, size=7, replace=False)
-    val_index  = np.arange(127,134)#labeled_scene_index #Comment out
+    
+    val_index  = np.arange(124,125)
+    #val_index  = np.arange(127,134)#labeled_scene_index #Comment out
+    
     #print("Val index scene indexxxxxxxx:", val_index) 
     #train_index=np.setdiff1d(labeled_scene_index,val_index)
-    train_index  = np.arange(106,127)#labeled_scene_index #comment out
+    
+    train_index  = np.arange(123,124)#labeled_scene_index #comment out
+    #train_index  = np.arange(106,127)#labeled_scene_index #comment out
+    
+    
+    
     #print("Train index scene indexxxxxxxx:", train_index)
     transform = torchvision.transforms.ToTensor()
     train_set = HybridDataset2(image_folder=image_folder,
@@ -225,7 +233,7 @@ class Trainer:
         
         if self.opt.type == "both":
             print("dynamic decoder type:", type(self.models["dynamic_decoder"]))
-            self.models["dynamic_decoder"].cuda()
+            self.models["dynamic_decoder"] = self.models["dynamic_decoder"].cuda()
             outputs["dynamic"] = self.models["dynamic_decoder"](features).cuda()
             outputs["static"] = self.models["static_decoder"](features).cuda()
             

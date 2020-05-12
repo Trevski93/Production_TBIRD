@@ -95,7 +95,7 @@ class Decoder(nn.Module):
             print(type(x))
             #print('11',x.shape)                                  ###############
             #pdb.set_trace
-            convv = nn.ConvTranspose2d(x.shape[1], x.shape[1], 2, stride=2)
+            convv = nn.ConvTranspose2d(x.shape[1], x.shape[1], 2, stride=2).to(device=cuda)
             print(type(convv))
             
             try: 

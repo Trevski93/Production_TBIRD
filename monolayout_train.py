@@ -220,10 +220,10 @@ class Trainer:
             
         #print("LETS DOUBLE CHECKKKKKKKKK:", inputs["color"].size())
 
-        features = self.models["encoder"](inputs["color"]).to(self.device)
+        features = self.models["encoder"](inputs["color"]).cuda()
         
         if self.opt.type == "both":
-            outputs["dynamic"] = self.models["dynamic_decoder"](features).to(self.device)
+            outputs["dynamic"] = self.models["dynamic_decoder"](features).cuda()
             outputs["static"] = self.models["static_decoder"](features).to(self.device)
             
             #print("PROCESS BATCHHHHHHHHHH, OUTPUTTSSS:", outputs["dynamic"].size(), outputs["static"].size()) 

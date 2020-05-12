@@ -138,16 +138,16 @@ class Trainer:
         self.models["encoder"] = model.Encoder(18, self.height, self.width, pretrained=False).to(self.device) #test batch_size 
         if self.opt.type == "both":
             self.models["static_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc).cuda()
+                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
             
-            self.models["static_discr"] = model.Discriminator().cuda()
-            self.models["dynamic_discr"] = model.Discriminator().cuda()
+            self.models["static_discr"] = model.Discriminator().to(self.device)
+            self.models["dynamic_discr"] = model.Discriminator().to(self.device)
             
             self.models["dynamic_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc).cuda()
+                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
         else:
-            self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc).cuda()
-            self.models["discriminator"] = model.Discriminator().cuda()
+            self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
+            self.models["discriminator"] = model.Discriminator().to(self.device)
         
         for key in self.models.keys():
             if "discr" in key:
@@ -228,13 +228,13 @@ class Trainer:
             
         #print("LETS DOUBLE CHECKKKKKKKKK:", inputs["color"].size())
 
-        features = self.models["encoder"](inputs["color"]).cuda()
+        features = self.models["encoder"](inputs["color"]).cuda() #tensor
   
         #print("features variable in training script:",features.device(1))
         
         if self.opt.type == "both":
-            self.models["dynamic_decoder"].get_device()
-            self.models["dynamic_decoder"] = self.models["dynamic_decoder"].cuda()
+            #self.models["dynamic_decoder"].get_device()
+            #self.models["dynamic_decoder"] = self.models["dynamic_decoder"].cuda()
             outputs["dynamic"] = self.models["dynamic_decoder"](features).cuda()
             outputs["static"] = self.models["static_decoder"](features).cuda()
             

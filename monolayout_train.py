@@ -130,16 +130,16 @@ class Trainer:
         self.models["encoder"] = model.Encoder(18, self.height, self.width, pretrained=False) #test batch_size 
         if self.opt.type == "both":
             self.models["static_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc).to(device)
+                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
             
-            self.models["static_discr"] = model.Discriminator().to(device)
-            self.models["dynamic_discr"] = model.Discriminator().to(device)
+            self.models["static_discr"] = model.Discriminator().to(self.device)
+            self.models["dynamic_discr"] = model.Discriminator().to(self.device)
             
             self.models["dynamic_decoder"] = model.Decoder(
-                self.models["encoder"].resnet_encoder.num_ch_enc).to(device)
+                self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
         else:
-            self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc).to(device)
-            self.models["discriminator"] = model.Discriminator().to(device)
+            self.models["decoder"] = model.Decoder(self.models["encoder"].resnet_encoder.num_ch_enc).to(self.device)
+            self.models["discriminator"] = model.Discriminator().to(self.device)
         
         for key in self.models.keys():
             if "discr" in key:

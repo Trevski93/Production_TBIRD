@@ -439,34 +439,36 @@ class Trainer:
                     iou_dynamic += mean_IU(pred_dynamic[bb], true_dynamic[bb])
                     mAP_static += mean_precision(pred_static[bb], true_static[bb])
                     mAP_dynamic += mean_precision(pred_dynamic[bb], true_dynamic[bb])
-            threat_static /= total_images #len(self.val_loader)
+            iou_static /= total_images #len(self.val_loader)
             mAP_static /= total_images #len(self.val_loader)
             #threat_static /= total_images #len(self.val_loader)
-            threat_dynamic /= total_images #len(self.val_loader)
+            iou_dynamic /= total_images #len(self.val_loader)
             mAP_dynamic /= total_images #len(self.val_loader)
             #threat_dynamic /= len(self.val_loader)
-            print("Epoch: %d | Validation: Static: mIOU: %.8f mAP: %.4f Dynamic: mIOU: %.8f mAP: %.4f"%(self.epoch, iou_static[1], mAP_static[1], iou_dynamic[1], mAP_dynamic[1]))
-          #  print("Epoch: %d | Validation: Static: mTS: %.8f mAP: %.4f Dynamic: mTS: %.8f mAP: %.4f"%(self.epoch, threat_static, mAP_static[1], threat_dynamic,mAP_dynamic[1]))
-            return threat_static + threat_dynamic #may want to see about having two returns to save independently
+          #  print("Epoch: %d | Validation: Static: mIOU: %.8f mAP: %.4f Dynamic: mIOU: %.8f mAP: %.4f"%(self.epoch, iou_static[1], mAP_static[1], iou_dynamic[1], mAP_dynamic[1]))
+            print("Epoch: %d | Validation: Static: mTS: %.8f mAP: %.4f Dynamic: mTS: %.8f mAP: %.4f"%(self.epoch, threat_static, mAP_static[1], threat_dynamic,mAP_dynamic[1]))
+            return iou_static[1] + iou_dynamic[1] #may want to see about having two returns to save independently
         else:
             iou, mAP = np.array([0., 0.]), np.array([0., 0.])
-            threat = 0
+            total_images=0
+           # threat = 0
             for batch_idx, ipts in tqdm.tqdm(enumerate(self.val_loader)):
                 with torch.no_grad():
                     inputs, outputs = self.process_batch(ipts, True)
                 pred = torch.argmax(outputs["topview"].detach(), 1).cuda().numpy()
                 true = torch.squeeze(inputs[self.opt.type],1).detach().cuda().numpy()
                 #print(pred.shape, true.shape)
-                threat+=compute_ts_road_map(pred,true)
+               # threat+=compute_ts_road_map(pred,true)
                 for bb in range(pred.shape[0]):
-               #     iou += mean_IU(pred[bb], true[bb])
+                    total_images +=1
+                    iou += mean_IU(pred[bb], true[bb])
                     mAP += mean_precision(pred[bb], true[bb])
-            iou /= len(self.val_loader)
-            mAP /= len(self.val_loader)
-            threat /= len(self.val_loader)
-          #  print("Epoch: %d | Validation: mIOU: %.4f mAP: %.4f"%(self.epoch, iou[1], mAP[1]))
-            print("Epoch: %d | Validation: mTS: %.4f mAP: %.4f"%(self.epoch, threat, mAP[1]))
-            return threat
+            iou /= total_images #len(self.val_loader)
+            mAP /= total_images #len(self.val_loader)
+          #  threat /= len(self.val_loader)
+            print("Epoch: %d | Validation: mIOU: %.4f mAP: %.4f"%(self.epoch, iou[1], mAP[1]))
+          #  print("Epoch: %d | Validation: mTS: %.4f mAP: %.4f"%(self.epoch, threat, mAP[1]))
+            return iou[1]
 
 
     def compute_losses(self, inputs, outputs):

@@ -445,8 +445,8 @@ class Trainer:
             iou_dynamic /= total_images #len(self.val_loader)
             mAP_dynamic /= total_images #len(self.val_loader)
             #threat_dynamic /= len(self.val_loader)
-          #  print("Epoch: %d | Validation: Static: mIOU: %.8f mAP: %.4f Dynamic: mIOU: %.8f mAP: %.4f"%(self.epoch, iou_static[1], mAP_static[1], iou_dynamic[1], mAP_dynamic[1]))
-            print("Epoch: %d | Validation: Static: mTS: %.8f mAP: %.4f Dynamic: mTS: %.8f mAP: %.4f"%(self.epoch, threat_static, mAP_static[1], threat_dynamic,mAP_dynamic[1]))
+            print("Epoch: %d | Validation: Static: mIOU: %.8f mAP: %.4f Dynamic: mIOU: %.8f mAP: %.4f"%(self.epoch, iou_static[1], mAP_static[1], iou_dynamic[1], mAP_dynamic[1]))
+          #  print("Epoch: %d | Validation: Static: mTS: %.8f mAP: %.4f Dynamic: mTS: %.8f mAP: %.4f"%(self.epoch, threat_static, mAP_static[1], threat_dynamic,mAP_dynamic[1]))
             return iou_static[1] + iou_dynamic[1] #may want to see about having two returns to save independently
         else:
             iou, mAP = np.array([0., 0.]), np.array([0., 0.])
